@@ -2,13 +2,31 @@ import {
   ChevronRightIcon,
   MagnifyingGlassIcon,
 } from "@heroicons/react/20/solid";
-import { PrismaClient } from "@prisma/client";
 
-let prisma = new PrismaClient();
+let users = [
+  {
+    name: "Kenneth Buell",
+    email: "lindsay.walton@example.com",
+    role: "Admin",
+  },
+  {
+    name: "Mattie Conway",
+    email: "mattie.conway@example.com",
+    role: "Member",
+  },
+  {
+    name: "Lola B. Graham",
+    email: "lolab.graham@example.com",
+    role: "Member",
+  },
+  {
+    name: "Cara Fuentes",
+    email: "cara.fuentes@example.com",
+    role: "Member",
+  },
+];
 
-export default async function Users() {
-  let users = await prisma.user.findMany();
-
+export default function Users() {
   return (
     <div className="px-8 bg-gray-50 pt-12 min-h-screen">
       <div className="flex items-center justify-between">
