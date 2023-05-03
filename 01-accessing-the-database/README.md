@@ -6,7 +6,7 @@ Watch on Build UI → [buildui.com/series/react-server-components/accessing-the-
 
 ## Links
 
-- [View the diff](https://github.com/builduilabs/)
+- [View the diff](./lesson.diff)
 - [View the starting code](./begin)
 - [View the ending code](./end)
 

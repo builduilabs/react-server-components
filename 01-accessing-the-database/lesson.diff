@@ -1,0 +1,58 @@
+diff --git a/01-accessing-the-database/begin/src/app/page.tsx b/01-accessing-the-database/end/src/app/page.tsx
+index 7210d15..28a86ce 100644
+--- a/01-accessing-the-database/begin/src/app/page.tsx
++++ b/01-accessing-the-database/end/src/app/page.tsx
+@@ -1,28 +1,12 @@
++import { prisma } from "@/lib/prisma";
+ import {
+   ChevronRightIcon,
+   MagnifyingGlassIcon,
+ } from "@heroicons/react/20/solid";
+ 
+-let users = [
+-  {
+-    name: "Kenneth Bell",
+-    email: "kenneth.bell@example.com",
+-  },
+-  {
+-    name: "Mattie Conway",
+-    email: "mattie.conway@example.com",
+-  },
+-  {
+-    name: "Lola B. Graham",
+-    email: "lolab.graham@example.com",
+-  },
+-  {
+-    name: "Cara Fuentes",
+-    email: "cara.fuentes@example.com",
+-  },
+-];
++export default async function Users() {
++  const users = await prisma.user.findMany();
+ 
+-export default function Users() {
+   return (
+     <div className="px-8 bg-gray-50 pt-12 min-h-screen">
+       <div className="flex items-center justify-between">
+@@ -59,6 +43,9 @@ export default function Users() {
+               <table className="min-w-full divide-y divide-gray-300">
+                 <thead className="bg-gray-50">
+                   <tr>
++                    <th className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 pl-6">
++                      ID
++                    </th>
+                     <th className="py-3.5 pr-3 text-left text-sm font-semibold text-gray-900 pl-6">
+                       Name
+                     </th>
+@@ -72,7 +59,10 @@ export default function Users() {
+                 </thead>
+                 <tbody className="divide-y divide-gray-200 bg-white">
+                   {users.map((user) => (
+-                    <tr key={user.email}>
++                    <tr key={user.id}>
++                      <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-6">
++                        {user.id}
++                      </td>
+                       <td className="whitespace-nowrap py-4 pr-3 text-sm font-medium text-gray-900 pl-6">
+                         {user.name}
+                       </td>
