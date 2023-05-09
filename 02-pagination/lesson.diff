@@ -1,0 +1,35 @@
+diff --git a/02-pagination/begin/src/app/page.tsx b/02-pagination/end/src/app/page.tsx
+index eddad01..c4d3e49 100644
+--- a/02-pagination/begin/src/app/page.tsx
++++ b/02-pagination/end/src/app/page.tsx
+@@ -3,9 +3,18 @@ import {
+   ChevronRightIcon,
+   MagnifyingGlassIcon,
+ } from "@heroicons/react/20/solid";
++import Link from "next/link";
+ 
+-export default async function Users() {
+-  const users = await prisma.user.findMany();
++export default async function Users({
++  searchParams,
++}: {
++  searchParams: { [key: string]: string | string[] | undefined };
++}) {
++  const page = typeof searchParams.page === "string" ? +searchParams.page : 1;
++  const users = await prisma.user.findMany({
++    take: 6,
++    skip: (page - 1) * 6,
++  });
+ 
+   return (
+     <div className="px-8 bg-gray-50 pt-12 min-h-screen">
+@@ -86,6 +95,9 @@ export default async function Users() {
+           </div>
+         </div>
+       </div>
++      <div>
++        <Link href={`/?page=${page + 1}`}>Next</Link>
++      </div>
+     </div>
+   );
+ }

@@ -1,8 +1,8 @@
-# Accessing the database
+# Building a users table
 
- Using Prisma inside of a React Server Component.
+Use Prisma to fetch data directly inside of a server component.
 
-Watch on Build UI → [buildui.com/series/react-server-components/accessing-the-database](http://buildui.com/series/react-server-components/accessing-the-database)
+Watch on Build UI → [buildui.com/series/react-server-components/building-a-users-table](http://buildui.com/series/react-server-components/building-a-users-table)
 
 ## Links
 
