@@ -2,7 +2,7 @@
 
 Use query params to paginate the list of users.
 
-Watch on Build UI → [buildui.com/series/react-server-components/adding-a-next-page-link](http://buildui.com/series/react-server-components/adding-a-next-page-link)
+Watch on Build UI → [buildui.com/series/react-server-components/adding-server-side-pagination](http://buildui.com/series/react-server-components/adding-server-side-pagination)
 
 ## Links
 
