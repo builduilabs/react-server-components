@@ -1,4 +1,4 @@
-# Adding a next page button
+# Adding server-side pagination
 
 Use query params to paginate the list of users.
 
