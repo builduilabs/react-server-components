@@ -10,9 +10,11 @@ export default async function Users({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  // 1002 / 7 = 143.3 = we have 144 pages of users
+  const perPage = 7;
   const totalUsers = await prisma.user.count();
-  const perPage = 6;
   const totalPages = Math.ceil(totalUsers / perPage);
+
   const page =
     typeof searchParams.page === "string" &&
     +searchParams.page > 1 &&
@@ -106,11 +108,11 @@ export default async function Users({
       <div className="mt-4 flex items-center justify-between">
         <p className="text-sm text-gray-700">
           Showing{" "}
-          <span className="font-medium">{(page - 1) * perPage + 1}</span> to{" "}
-          <span className="font-medium">
+          <span className="font-semibold">{(page - 1) * perPage + 1}</span> to{" "}
+          <span className="font-semibold">
             {Math.min(page * perPage, totalUsers)}
           </span>{" "}
-          of <span className="font-medium">{totalUsers}</span> users
+          of <span className="font-semibold">{totalUsers}</span> users
         </p>
         <div className="space-x-2">
           <Link
