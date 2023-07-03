@@ -1,0 +1,101 @@
+diff --git a/begin/src/app/page.tsx b/end/src/app/page.tsx
+index be75dd1..5c6a29f 100644
+--- a/begin/src/app/page.tsx
++++ b/end/src/app/page.tsx
+@@ -4,14 +4,24 @@ import {
+   MagnifyingGlassIcon,
+ } from "@heroicons/react/20/solid";
+ import Link from "next/link";
++import { SearchInput } from "./search-input";
+ 
+ export default async function Users({
+   searchParams,
+ }: {
+   searchParams: { [key: string]: string | string[] | undefined };
+ }) {
++  const search =
++    typeof searchParams.search === "string" ? searchParams.search : undefined;
++
+   const perPage = 7;
+-  const totalUsers = await prisma.user.count();
++  const totalUsers = await prisma.user.count({
++    where: {
++      name: {
++        contains: search,
++      },
++    },
++  });
+   const totalPages = Math.ceil(totalUsers / perPage);
+ 
+   const page =
+@@ -24,27 +34,18 @@ export default async function Users({
+   const users = await prisma.user.findMany({
+     take: perPage,
+     skip: (page - 1) * perPage,
++    where: {
++      name: {
++        contains: search,
++      },
++    },
+   });
+ 
+   return (
+     <div className="min-h-screen bg-gray-50 px-8 pt-12">
+       <div className="flex items-center justify-between">
+-        <div className="w-80 mt-1">
+-          <div className="relative rounded-md shadow-sm">
+-            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+-              <MagnifyingGlassIcon
+-                className="h-5 w-5 text-gray-400"
+-                aria-hidden="true"
+-              />
+-            </div>
+-            <input
+-              type="text"
+-              name="search"
+-              id="search"
+-              className="block w-full rounded-md border-gray-300 pl-10 text-sm focus:border-gray-400 focus:outline-none focus:ring-0"
+-              placeholder="Search"
+-            />
+-          </div>
++        <div className="mt-1 w-80">
++          <SearchInput search={search} />
+         </div>
+         <div className="ml-16 mt-0 flex-none">
+           <button
+diff --git a/end/src/app/search-input.tsx b/end/src/app/search-input.tsx
+new file mode 100644
+index 0000000..0f08e93
+--- /dev/null
++++ b/end/src/app/search-input.tsx
+@@ -0,0 +1,30 @@
++"use client";
++
++import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
++import { useRouter } from "next/navigation";
++
++export function SearchInput({ search }: { search?: string }) {
++  const router = useRouter();
++
++  return (
++    <div className="relative rounded-md shadow-sm">
++      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
++        <MagnifyingGlassIcon
++          className="h-5 w-5 text-gray-400"
++          aria-hidden="true"
++        />
++      </div>
++      <input
++        type="text"
++        name="search"
++        id="search"
++        className="block w-full rounded-md border-gray-300 pl-10 text-sm focus:border-gray-400 focus:outline-none focus:ring-0"
++        placeholder="Search"
++        defaultValue={search}
++        onChange={(event) => {
++          router.push(`/?search=${event.target.value}`);
++        }}
++      />
++    </div>
++  );
++}
