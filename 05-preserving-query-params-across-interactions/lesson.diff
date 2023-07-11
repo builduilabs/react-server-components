@@ -1,0 +1,124 @@
+diff --git a/begin/src/app/page.tsx b/end/src/app/page.tsx
+index 5c6a29f..1b427b3 100644
+--- a/begin/src/app/page.tsx
++++ b/end/src/app/page.tsx
+@@ -1,8 +1,5 @@
+ import { prisma } from "@/lib/prisma";
+-import {
+-  ChevronRightIcon,
+-  MagnifyingGlassIcon,
+-} from "@heroicons/react/20/solid";
++import { ChevronRightIcon } from "@heroicons/react/20/solid";
+ import Link from "next/link";
+ import { SearchInput } from "./search-input";
+ 
+@@ -41,6 +38,16 @@ export default async function Users({
+     },
+   });
+ 
++  const currentSearchParams = new URLSearchParams();
++
++  if (search) {
++    currentSearchParams.set("search", search);
++  }
++
++  if (page > 1) {
++    currentSearchParams.set("page", `${page}`);
++  }
++
+   return (
+     <div className="min-h-screen bg-gray-50 px-8 pt-12">
+       <div className="flex items-center justify-between">
+@@ -116,24 +123,76 @@ export default async function Users({
+           of <span className="font-semibold">{totalUsers}</span> users
+         </p>
+         <div className="space-x-2">
+-          <Link
+-            href={page > 2 ? `/?page=${page - 1}` : "/"}
+-            className={`${
+-              page === 1 ? "pointer-events-none opacity-50" : ""
+-            } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
+-          >
+-            Previous
+-          </Link>
+-          <Link
+-            href={page < totalPages ? `/?page=${page + 1}` : `/?page=${page}`}
+-            className={`${
+-              page >= totalPages ? "pointer-events-none opacity-50" : ""
+-            } inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50`}
+-          >
+-            Next
+-          </Link>
++          <PreviousPage page={page} currentSearchParams={currentSearchParams} />
++          <NextPage
++            page={page}
++            totalPages={totalPages}
++            currentSearchParams={currentSearchParams}
++          />
+         </div>
+       </div>
+     </div>
+   );
+ }
++
++function PreviousPage({
++  page,
++  currentSearchParams,
++}: {
++  page: number;
++  currentSearchParams: URLSearchParams;
++}) {
++  const newSearchParams = new URLSearchParams(currentSearchParams);
++
++  if (page > 2) {
++    newSearchParams.set("page", `${page - 1}`);
++  } else {
++    newSearchParams.delete("page");
++  }
++
++  return page > 1 ? (
++    <Link
++      href={`/?${newSearchParams}`}
++      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50"
++    >
++      Previous
++    </Link>
++  ) : (
++    <button
++      disabled
++      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 opacity-50"
++    >
++      Previous
++    </button>
++  );
++}
++
++function NextPage({
++  page,
++  totalPages,
++  currentSearchParams,
++}: {
++  page: number;
++  totalPages: number;
++  currentSearchParams: URLSearchParams;
++}) {
++  const newSearchParams = new URLSearchParams(currentSearchParams);
++
++  newSearchParams.set("page", `${page + 1}`);
++
++  return page < totalPages ? (
++    <Link
++      href={`/?${newSearchParams}`}
++      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 hover:bg-gray-50"
++    >
++      Next
++    </Link>
++  ) : (
++    <button
++      disabled
++      className="inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-900 opacity-50"
++    >
++      Next
++    </button>
++  );
++}
