@@ -8,6 +8,8 @@ export default async function Page({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+
   const search =
     typeof searchParams.search === "string" ? searchParams.search : undefined;
 
