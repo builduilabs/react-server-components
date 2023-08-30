@@ -1,0 +1,32 @@
+diff --git a/begin/src/app/.DS_Store b/begin/src/app/.DS_Store
+deleted file mode 100644
+index 7ceb314..0000000
+Binary files a/begin/src/app/.DS_Store and /dev/null differ
+diff --git a/end/src/app/loading.tsx b/end/src/app/loading.tsx
+new file mode 100644
+index 0000000..4d5f57a
+--- /dev/null
++++ b/end/src/app/loading.tsx
+@@ -0,0 +1,9 @@
++import { Spinner } from "./components/spinner";
++
++export default function Loading() {
++  return (
++    <div className="flex h-full items-center justify-center bg-gray-50">
++      <Spinner className="w-8 animate-spin" />
++    </div>
++  );
++}
+diff --git a/begin/src/app/page.tsx b/end/src/app/page.tsx
+index 49b17f9..2962991 100644
+--- a/begin/src/app/page.tsx
++++ b/end/src/app/page.tsx
+@@ -8,6 +8,8 @@ export default async function Page({
+ }: {
+   searchParams: { [key: string]: string | string[] | undefined };
+ }) {
++  await new Promise((resolve) => setTimeout(resolve, 2000));
++
+   const search =
+     typeof searchParams.search === "string" ? searchParams.search : undefined;
+ 
