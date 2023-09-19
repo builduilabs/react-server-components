@@ -1,0 +1,48 @@
+diff --git a/begin/src/app/search-input.tsx b/end/src/app/search-input.tsx
+index 105fe41..5ccc5d6 100644
+--- a/begin/src/app/search-input.tsx
++++ b/end/src/app/search-input.tsx
+@@ -2,10 +2,14 @@
+ 
+ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+ import { useRouter } from "next/navigation";
++import { useTransition } from "react";
++import { Spinner } from "./components/spinner";
+ 
+ export function SearchInput({ search }: { search?: string }) {
+   const router = useRouter();
+ 
++  const [isPending, startTransition] = useTransition();
++
+   return (
+     <div className="relative rounded-md shadow-sm">
+       <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+@@ -22,13 +26,23 @@ export function SearchInput({ search }: { search?: string }) {
+         placeholder="Search"
+         defaultValue={search}
+         onChange={(event) => {
+-          if (event.target.value) {
+-            router.push(`/?search=${event.target.value}`);
+-          } else {
+-            router.push("/");
+-          }
++          startTransition(() => {
++            if (event.target.value) {
++              router.push(`/?search=${event.target.value}`);
++            } else {
++              router.push("/");
++            }
++          });
+         }}
+       />
++      {isPending && (
++        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
++          <Spinner
++            className="h-5 w-5 animate-spin text-gray-400"
++            aria-hidden="true"
++          />
++        </div>
++      )}
+     </div>
+   );
+ }
