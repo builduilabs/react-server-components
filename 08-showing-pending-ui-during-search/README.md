@@ -15,7 +15,7 @@ Watch on Build UI → [buildui.com/courses/react-server-components/showing-pendi
 From the root,
 
 ```sh
-cd 07-adjusting-the-loading-boundary/end
+cd 08-debouncing-client-side-search/end
 pnpm install
 pnpm run dev
 ```
