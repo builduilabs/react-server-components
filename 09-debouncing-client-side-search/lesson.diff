@@ -1,0 +1,54 @@
+diff --git a/./begin/src/app/search-input.tsx b/./end/src/app/search-input.tsx
+index 5ccc5d6..94a4119 100644
+--- a/./begin/src/app/search-input.tsx
++++ b/./end/src/app/search-input.tsx
+@@ -2,13 +2,15 @@
+ 
+ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
+ import { useRouter } from "next/navigation";
+-import { useTransition } from "react";
++import { useState, useTransition } from "react";
+ import { Spinner } from "./components/spinner";
+ 
+ export function SearchInput({ search }: { search?: string }) {
+   const router = useRouter();
+ 
+   const [isPending, startTransition] = useTransition();
++  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout>();
++  const isSearching = timeoutId || isPending;
+ 
+   return (
+     <div className="relative rounded-md shadow-sm">
+@@ -26,16 +28,24 @@ export function SearchInput({ search }: { search?: string }) {
+         placeholder="Search"
+         defaultValue={search}
+         onChange={(event) => {
+-          startTransition(() => {
+-            if (event.target.value) {
+-              router.push(`/?search=${event.target.value}`);
+-            } else {
+-              router.push("/");
+-            }
+-          });
++          clearTimeout(timeoutId);
++
++          const id = setTimeout(() => {
++            startTransition(() => {
++              if (event.target.value) {
++                router.push(`/?search=${event.target.value}`);
++              } else {
++                router.push("/");
++              }
++
++              setTimeoutId(undefined);
++            });
++          }, 500);
++
++          setTimeoutId(id);
+         }}
+       />
+-      {isPending && (
++      {isSearching && (
+         <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+           <Spinner
+             className="h-5 w-5 animate-spin text-gray-400"
